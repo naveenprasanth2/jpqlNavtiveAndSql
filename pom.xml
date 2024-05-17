@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.bharath.springdata</groupId>
-    <artifactId>jpqlNavtiveAndSql</artifactId>
+    <artifactId>jpqlNativeAndSql</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>jpqlNavtiveAndSql</name>
     <description>jpqlNavtiveAndSql</description>

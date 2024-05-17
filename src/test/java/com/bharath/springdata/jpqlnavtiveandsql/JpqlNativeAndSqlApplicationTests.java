@@ -1,0 +1,35 @@
+package com.bharath.springdata.jpqlnavtiveandsql;
+
+import com.bharath.springdata.jpqlnavtiveandsql.entities.Student;
+import com.bharath.springdata.jpqlnavtiveandsql.repository.StudentRepository;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.Arrays;
+import java.util.List;
+
+@SpringBootTest
+class JpqlNativeAndSqlApplicationTests {
+
+    @Autowired
+    private StudentRepository studentRepository;
+
+    @Test
+    void testStudentCreate() {
+        Student student = Student.builder().firstName("John").lastName("Ferguson").score(88).build();
+        Student student1 = Student.builder().firstName("Bill").lastName("Gates").score(75).build();
+        studentRepository.saveAll(List.of(student, student1));
+    }
+
+    @Test
+    void testFindByJpqlQuery(){
+        studentRepository.findAllStudents().forEach(System.out::println);
+    }
+
+
+    @Test
+    void testFindAllStudentsPartial(){
+        studentRepository.findAllStudentsPartialData().forEach(x-> System.out.println(Arrays.toString(x)));
+    }
+}
