@@ -32,4 +32,15 @@ class JpqlNativeAndSqlApplicationTests {
     void testFindAllStudentsPartial(){
         studentRepository.findAllStudentsPartialData().forEach(x-> System.out.println(Arrays.toString(x)));
     }
+
+    @Test
+    void testFindAllStudentsByFirstName(){
+        studentRepository.findAllStudentsForFirstName("john").forEach(System.out::println);
+    }
+
+    @Test
+    void testFindAllStudentsBetweenFromAndToValues(){
+        studentRepository.findAllStudentsBetweenGivenValues(75, 90).forEach(System.out::println);
+    }
+
 }
