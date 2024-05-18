@@ -3,9 +3,13 @@ package com.bharath.springdata.jpqlnavtiveandsql;
 import com.bharath.springdata.jpqlnavtiveandsql.entities.Student;
 import com.bharath.springdata.jpqlnavtiveandsql.repository.StudentRepository;
 import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 
 import java.util.Arrays;
@@ -17,7 +21,7 @@ class JpqlNativeAndSqlApplicationTests {
     @Autowired
     private StudentRepository studentRepository;
 
-    @Test
+    @RepeatedTest(value = 10)
     void testStudentCreate() {
         Student student = Student.builder().firstName("John").lastName("Ferguson").score(88).build();
         Student student1 = Student.builder().firstName("Bill").lastName("Gates").score(75).build();
@@ -26,9 +30,23 @@ class JpqlNativeAndSqlApplicationTests {
 
     @Test
     void testFindByJpqlQuery() {
-        studentRepository.findAllStudents().forEach(System.out::println);
+        PageRequest pageRequest = PageRequest.of(0, 5)
+                .withSort(Sort.by(Sort.Order.asc("lastName"), Sort.Order.desc("firstName")));
+        studentRepository.findAllStudents(pageRequest).forEach(System.out::println);
     }
 
+    @Test
+    void findByInTheListUsingJpql(){
+        Pageable pageable = PageRequest.of(0, 2).withSort(Sort.by(Sort.Order.desc("lastName")));
+        studentRepository.findAllStudentsIn(List.of(1, 52, 202), pageable).forEach(System.out::println);
+    }
+
+
+    @Test
+    void findByInTheListUsingJpqlWithSort(){
+        Pageable pageable = PageRequest.of(0, 5).withSort(Sort.by(Sort.Order.desc("lastName")));
+        studentRepository.findAllStudentsIn(List.of(1, 52, 202), pageable).forEach(System.out::println);
+    }
 
     @Test
     void testFindAllStudentsPartial() {
